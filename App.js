@@ -6,20 +6,44 @@ import {
   StatusBar, 
   TextInput, 
   Dimensions, 
-  Platform} from 'react-native';
+  Platform,
+  ScrollView} from 'react-native';
+import ToDo from './ToDo';
 
 const {height, width} = Dimensions.get("window");
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <Text style={styles.title}>Jisoo To Do</Text>
-      <View style={styles.card}>
-        <TextInput style={styles.input} placeholder={"New To do"}/>
+export default class App extends React.Component {
+  state = {
+    nowToDo: ""
+  };
+  render() {
+    const {newToDo} = this.state;
+    return (
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
+        <Text style={styles.title}>Jisoo To Do</Text>
+        <View style={styles.card}>
+          <TextInput
+           style={styles.input} 
+           placeholder={"New To do"} 
+           value={newToDo} 
+           onChangeText={this._controlNewToDo}
+           placeholderTextColor={"#999"}
+           returnKeyType={"done"}
+           autoCorrect={false}
+           />
+           <ScrollView contentContainerStyle={styles.toDos}>
+             <ToDo text={"Hello I am a Todo"}/>
+           </ScrollView>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
+  _controlNewToDo = text => {
+    this.setState({
+      newToDo: text
+    });
+  }
 }
 
 const styles = StyleSheet.create({
@@ -57,6 +81,13 @@ const styles = StyleSheet.create({
     })
   },
   input: {
-
+    padding: 20,
+    borderBottomColor: "#bbb",
+    // borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: 1,
+    fontSize: 25,
+  },
+  toDos: {
+    alignItems: "center"
   }
 });
